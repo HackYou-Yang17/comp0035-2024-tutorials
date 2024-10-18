@@ -1,3 +1,17 @@
+from tutorialpkg.mypkg2.mymodule2_1 import calculate_area_of_circle  # local application import
+from tutorialpkg.mypkg2.mymodule2_2 import fetch_user_data
+from pathlib import Path
+
+# This script is located in a subfolder so you need to navigate up to the parent (src) and then its parent (project root), then down to the 'data' directory and finally the .csv file
+csv_file = Path(__file__).parent.parent.joinpath('data', 'paralympics_events_raw.csv')
+
+# Check if the file exists
+if csv_file.exists():
+    print(f"CSV file found: {csv_file}")
+else:
+    print("CSV file not found.")
+    print(f"{csv_file}")
+
 mock_database = {
     1: {'name': 'Alice', 'email': 'alice@example.com', 'age': 30},
     42: {'name': 'Bob', 'email': 'bob@example.com', 'age': 45},
