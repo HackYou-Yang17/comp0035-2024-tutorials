@@ -1,6 +1,8 @@
 import pandas as pd
 import pathlib
- 
+
+# Complete 2.07, 2.08, and 2.09
+
 pd.set_option("display.max_columns", None)
 
 
@@ -46,9 +48,10 @@ def data_preparation(df1, df2):
         print(f"Error, can't convert column {df1[x].name} to int: {e}") 
     '''
 
-    return df1.merge(df2, how='left', left_on='country', right_on='Name')
+    df_prepared = df1.drop(columns=['URL', 'disabilities_included', 'highlights'], axis=1) # Check work
 
-    
+    return df_prepared.merge(df2, how='left', left_on='country', right_on='Name')
+
 
 if __name__ == '__main__':
 
