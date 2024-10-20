@@ -1,10 +1,15 @@
 import pandas as pd
 import pathlib
 
-# Complete 2.07, 2.08, and 2.09
+# Complete 2.08, and 2.09
 
-pd.set_option("display.max_columns", None)
-
+replacement_names = {
+        'UK': 'Great Britain',
+        'USA': 'United States of America',
+        'Korea': 'Republic of Korea',
+        'Russia': 'Russian Federation',
+        'China': "People's Republic of China"
+    }
 
 def print_dataframe_data(dataframe):
         """Summary or Description of the Function
@@ -37,7 +42,20 @@ def data_preparation(df1, df2):
     
     df1['start'] = pd.to_datetime(df1['start'], format = '%d/%m/%Y')
     df1['end'] = pd.to_datetime(df1['end'], format = '%d/%m/%Y')
-    
+
+    df1["country"] = df1["country"].replace(to_replace=replacement_names)
+
+    merged_df = df1.merge(df2, how='left', left_on='country', right_on='Name')
+    df_dropped = merged_df.drop(columns=['URL', 'disabilities_included', 'highlights', 'Name'], axis=1)
+
+    df_dropped = df_dropped.drop(index=0)
+    df_dropped = df_dropped.drop(index=17)
+    df_dropped = df_dropped.drop(index=31)
+
+    df_prepped = df_dropped.reset_index(drop=True)
+
+    missing_rows = df_prepped[df_prepped.isna().any(axis=1)]
+
     '''
     try:
         columns_to_change= ['countries', 'events', 'participants_m', 'participants_f', 'participants']
@@ -48,12 +66,12 @@ def data_preparation(df1, df2):
         print(f"Error, can't convert column {df1[x].name} to int: {e}") 
     '''
 
-    df_prepared = df1.drop(columns=['URL', 'disabilities_included', 'highlights'], axis=1) # Check work
-
-    return df_prepared.merge(df2, how='left', left_on='country', right_on='Name')
+    return missing_rows, df_prepped
 
 
 if __name__ == '__main__':
+
+    pd.set_option("display.max_columns", None)
 
     try:
         csvPath = pathlib.Path(__file__).parent.parent.joinpath('tutorialpkg' ,'data', 'paralympics_events_raw.csv')
@@ -67,8 +85,9 @@ if __name__ == '__main__':
     xlsxDf2 = pd.read_excel(xlsxPath, sheet_name = "medal_standings")
     npcDf = pd.read_csv(npcPath, encoding='utf-8', encoding_errors='ignore', usecols=['Code', 'Name'])
     
-    mergedDf = data_preparation(csvDf, npcDf)
-    print_dataframe_data(mergedDf)
+    missing_rows_list, df_prepped = data_preparation(csvDf, npcDf)
+    print_dataframe_data(missing_rows_list)
+    #print_dataframe_data(df_prepped)
 
     print("\nDone")
     
