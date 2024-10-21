@@ -54,6 +54,11 @@ def data_preparation(df1, df2):
 
     df_prepped = df_dropped.reset_index(drop=True)
 
+    for str in df_prepped["type"]:
+        str.lower().strip(" ")
+
+    df_prepped.insert(df_prepped.columns.get_loc('end'), 'duration', df_prepped['end'] - df_prepped['start']).duration.dt.days.astype(int)
+
     missing_rows = df_prepped[df_prepped.isna().any(axis=1)]
 
     '''
@@ -88,6 +93,8 @@ if __name__ == '__main__':
     missing_rows_list, df_prepped = data_preparation(csvDf, npcDf)
     print_dataframe_data(missing_rows_list)
     #print_dataframe_data(df_prepped)
+
+    print(df_prepped['type'].unique())
 
     print("\nDone")
     
