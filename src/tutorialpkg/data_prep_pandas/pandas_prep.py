@@ -94,6 +94,8 @@ if __name__ == '__main__':
     print_dataframe_data(missing_rows_list)
     #print_dataframe_data(df_prepped)
 
+    df_prepped.to_csv(index=False, path_or_buf="src/tutorialpkg/data/paralympics_events_prepared.csv")
+
     print(df_prepped['type'].unique())
 
     print("\nDone")
