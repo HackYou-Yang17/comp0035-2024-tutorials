@@ -21,6 +21,11 @@ def create_box_plots(df):
 
     plt.show()
 
+def create_line_plots(df):
+
+    df.groupby("type").plot(x="start", y="participants")
+
+    plt.show()
 
 if __name__ == '__main__':
 
@@ -34,3 +39,4 @@ if __name__ == '__main__':
 
     create_hist_plots(df_prep)
     create_box_plots(df_prep)
+    create_line_plots(df_prep)
