@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 
 
-def print_plots(df):
+def create_hist_plots(df):
 
     # Create a histogram of the DataFrame
     summer_df = df[df['type'] == 'summer']
@@ -15,6 +15,13 @@ def print_plots(df):
    # Show the plot
     plt.show()
 
+def create_box_plots(df):
+
+    df.boxplot(subplots=True, sharey=False)
+
+    plt.show()
+
+
 if __name__ == '__main__':
 
     try:
@@ -23,4 +30,7 @@ if __name__ == '__main__':
     except FileNotFoundError as e:
         print(f"File not found. Please check the file path. Error: {e}")
 
-    print_plots(df_prep)
+    df_prep
+
+    create_hist_plots(df_prep)
+    create_box_plots(df_prep)
